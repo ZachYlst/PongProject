@@ -8,19 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		A6CAE5AA2050344300554AB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CAE5A92050344300554AB3 /* AppDelegate.swift */; };
-		A6CAE5AC2050344300554AB3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A6CAE5AB2050344300554AB3 /* GameScene.sks */; };
 		A6CAE5AE2050344300554AB3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = A6CAE5AD2050344300554AB3 /* Actions.sks */; };
 		A6CAE5B02050344300554AB3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CAE5AF2050344300554AB3 /* GameScene.swift */; };
 		A6CAE5B22050344300554AB3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CAE5B12050344300554AB3 /* GameViewController.swift */; };
 		A6CAE5B52050344300554AB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CAE5B32050344300554AB3 /* Main.storyboard */; };
 		A6CAE5B72050344300554AB3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6CAE5B62050344300554AB3 /* Assets.xcassets */; };
 		A6CAE5BA2050344300554AB3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CAE5B82050344300554AB3 /* LaunchScreen.storyboard */; };
+		A6EDD9012052E4E700FC6689 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A6EDD9002052E4E700FC6689 /* GameScene.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A6CAE5A62050344300554AB3 /* PongProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PongProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6CAE5A92050344300554AB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A6CAE5AB2050344300554AB3 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		A6CAE5AD2050344300554AB3 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		A6CAE5AF2050344300554AB3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A6CAE5B12050344300554AB3 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +27,7 @@
 		A6CAE5B62050344300554AB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6CAE5B92050344300554AB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6CAE5BB2050344300554AB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6EDD9002052E4E700FC6689 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,14 +60,14 @@
 		A6CAE5A82050344300554AB3 /* PongProject */ = {
 			isa = PBXGroup;
 			children = (
-				A6CAE5A92050344300554AB3 /* AppDelegate.swift */,
-				A6CAE5AB2050344300554AB3 /* GameScene.sks */,
-				A6CAE5AD2050344300554AB3 /* Actions.sks */,
 				A6CAE5AF2050344300554AB3 /* GameScene.swift */,
+				A6EDD9002052E4E700FC6689 /* GameScene.sks */,
 				A6CAE5B12050344300554AB3 /* GameViewController.swift */,
+				A6CAE5AD2050344300554AB3 /* Actions.sks */,
 				A6CAE5B32050344300554AB3 /* Main.storyboard */,
-				A6CAE5B62050344300554AB3 /* Assets.xcassets */,
 				A6CAE5B82050344300554AB3 /* LaunchScreen.storyboard */,
+				A6CAE5A92050344300554AB3 /* AppDelegate.swift */,
+				A6CAE5B62050344300554AB3 /* Assets.xcassets */,
 				A6CAE5BB2050344300554AB3 /* Info.plist */,
 			);
 			path = PongProject;
@@ -133,7 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6CAE5B52050344300554AB3 /* Main.storyboard in Resources */,
-				A6CAE5AC2050344300554AB3 /* GameScene.sks in Resources */,
+				A6EDD9012052E4E700FC6689 /* GameScene.sks in Resources */,
 				A6CAE5B72050344300554AB3 /* Assets.xcassets in Resources */,
 				A6CAE5BA2050344300554AB3 /* LaunchScreen.storyboard in Resources */,
 				A6CAE5AE2050344300554AB3 /* Actions.sks in Resources */,
