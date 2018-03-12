@@ -11,6 +11,9 @@ import GameplayKit
 
 class GameScene: SKScene
 {
+    var exitCode: Int = 0
+    var score = [Int]()
+    
     var player = SKSpriteNode()
     var opponent = SKSpriteNode()
     var ball = SKSpriteNode()
@@ -18,10 +21,6 @@ class GameScene: SKScene
     var opponentScore = SKLabelNode()
     var leftBumper = SKSpriteNode()
     var rightBumper = SKSpriteNode()
-    
-    
-    
-    var score = [Int]()
     
     override func didMove(to view: SKView)
     {
@@ -53,17 +52,31 @@ class GameScene: SKScene
         ball.position = CGPoint(x: 0, y: 0)
         ball.physicsBody?.velocity = CGVector(dx:0, dy: 0)
         
+        let transition = SKTransition.reveal(with: .down, duration: 1.0)
+        let nextScene = GameOverScene(size: (scene?.size)!)
+        nextScene.scaleMode = .aspectFill
+        
         if playerWhoWon == player
         {
             score[0] += 1
             playerScore.text = String("\(score[0])")
             ball.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 40))
+            if (score[0] > 10)
+            {
+                exitCode = 1
+                scene?.view?.presentScene(nextScene, transition: transition)
+            }
         }
         else if playerWhoWon == opponent
         {
             score[1] += 1
             opponentScore.text = String("\(score[1])")
             ball.physicsBody?.applyImpulse(CGVector(dx: -40, dy: -40))
+            if (score[1] > 10)
+            {
+                exitCode = 2
+                scene?.view?.presentScene(nextScene, transition: transition)
+            }
         }
     }
     
@@ -89,7 +102,7 @@ class GameScene: SKScene
     
     override func update(_ currentTime: TimeInterval)
     {
-        opponent.run(SKAction.moveTo(x: ball.position.x, duration: 0.1))
+        opponent.run(SKAction.moveTo(x: ball.position.x, duration: 0.2))
         
         if ball.position.y <= player.position.y - 100
         {
@@ -100,13 +113,13 @@ class GameScene: SKScene
             addScore(playerWhoWon: player)
         }
         
-        // This be a broken
         
-        let circle = UIBezierPath(roundedRect: CGRect(x: leftBumper.position.x, y: leftBumper.position.y, width: 5, height: 5), cornerRadius: 5)
         
-        let followCircle = SKAction.follow(circle.cgPath, asOffset: true, orientToPath: false, duration: 2.0)
-        
-        leftBumper.run(SKAction.sequence([followCircle]))
-        rightBumper.run(SKAction.sequence([followCircle]))
+//        let circle = UIBezierPath(roundedRect: CGRect(x: leftBumper.position.x, y: leftBumper.position.y, width: 5, height: 5), cornerRadius: 5)
+//
+//        let followCircle = SKAction.follow(circle.cgPath, asOffset: true, orientToPath: false, duration: 2.0)
+//
+//        leftBumper.run(SKAction.sequence([followCircle]))
+//        rightBumper.run(SKAction.sequence([followCircle]))
     }
 }
