@@ -9,7 +9,8 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene
+// The primary scene where the game commences
+class GameScene: SKScene, SKPhysicsContactDelegate
 {
     var exitCode: Int = 0
     var score = [Int]()
@@ -19,20 +20,42 @@ class GameScene: SKScene
     var ball = SKSpriteNode()
     var playerScore = SKLabelNode()
     var opponentScore = SKLabelNode()
-    var leftBumper = SKSpriteNode()
-    var rightBumper = SKSpriteNode()
+    var bumper = SKSpriteNode()
     
+    var pausedLabel = SKLabelNode()
+    var pausedBackground = SKSpriteNode()
+    
+    var easyButton = SKSpriteNode()
+    var mediumButton = SKSpriteNode()
+    var hardButton = SKSpriteNode()
+    
+    // Called imediately after the scene is called by the view
     override func didMove(to view: SKView)
     {
         startGame()
         
+        self.physicsWorld.contactDelegate = self
+        
         player = self.childNode(withName: "player") as! SKSpriteNode
         opponent = self.childNode(withName: "opponent") as! SKSpriteNode
-        ball = self.childNode(withName: "ball") as! SKSpriteNode
         playerScore = self.childNode(withName: "playerScore") as! SKLabelNode
         opponentScore = self.childNode(withName: "opponentScore") as! SKLabelNode
-        leftBumper = self.childNode(withName: "leftBumper") as! SKSpriteNode
-        rightBumper = self.childNode(withName: "rightBumper") as! SKSpriteNode
+        ball = self.childNode(withName: "ball") as! SKSpriteNode
+        ball.physicsBody?.usesPreciseCollisionDetection = true
+        bumper = self.childNode(withName: "bumper") as! SKSpriteNode
+        bumper.physicsBody?.usesPreciseCollisionDetection = true
+        
+        pausedLabel = self.childNode(withName: "pausedLabel") as! SKLabelNode
+        pausedLabel.isHidden = true
+        pausedBackground = self.childNode(withName: "pausedBackground") as! SKSpriteNode
+        pausedBackground.isHidden = true
+        
+        easyButton = self.childNode(withName: "easyButton") as! SKSpriteNode
+        easyButton.isUserInteractionEnabled = true
+        mediumButton = self.childNode(withName: "mediumButton") as! SKSpriteNode
+        mediumButton.isUserInteractionEnabled = true
+        hardButton = self.childNode(withName: "hardButton") as! SKSpriteNode
+        hardButton.isUserInteractionEnabled = true
         
         ball.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 40))
         
@@ -42,15 +65,17 @@ class GameScene: SKScene
         self.physicsBody = border
     }
     
+    // Called to initialize the game with a default score
     func startGame()
     {
         score = [0,0]
     }
     
+    // Called when either player scores a point
     func addScore(playerWhoWon: SKSpriteNode)
     {
-        ball.position = CGPoint(x: 0, y: 0)
         ball.physicsBody?.velocity = CGVector(dx:0, dy: 0)
+        ball.position = CGPoint(x: 0.0, y: 0.0)
         
         let transition = SKTransition.reveal(with: .down, duration: 1.0)
         let nextScene = GameOverScene(size: (scene?.size)!)
@@ -58,13 +83,13 @@ class GameScene: SKScene
         
         if playerWhoWon == player
         {
+
             score[0] += 1
             playerScore.text = String("\(score[0])")
             ball.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 40))
             if (score[0] > 10)
             {
                 exitCode = 1
-                scene?.view?.presentScene(nextScene, transition: transition)
             }
         }
         else if playerWhoWon == opponent
@@ -75,21 +100,27 @@ class GameScene: SKScene
             if (score[1] > 10)
             {
                 exitCode = 2
-                scene?.view?.presentScene(nextScene, transition: transition)
             }
         }
     }
     
+    // Called when a touch is detected in the view
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
+        self.view?.isPaused = false
+        pausedLabel.isHidden = true
+        pausedBackground.isHidden = true
+        
         for touch in touches
         {
             let location = touch.location(in: self)
             
             player.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
+       
     }
     
+    // Called when the location of a touch changes
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         for touch in touches
@@ -100,9 +131,18 @@ class GameScene: SKScene
         }
     }
     
+    // Called when the user's finger is removed from the scene
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        self.view?.isPaused = true
+        pausedLabel.isHidden = false
+        pausedBackground.isHidden = false
+    }
+    
+    // Called every frame the scene is active
     override func update(_ currentTime: TimeInterval)
     {
-        opponent.run(SKAction.moveTo(x: ball.position.x, duration: 0.2))
+        opponent.run(SKAction.moveTo(x: ball.position.x, duration: 0.3))
         
         if ball.position.y <= player.position.y - 100
         {
@@ -112,14 +152,22 @@ class GameScene: SKScene
         {
             addScore(playerWhoWon: player)
         }
-        
-        
-        
-//        let circle = UIBezierPath(roundedRect: CGRect(x: leftBumper.position.x, y: leftBumper.position.y, width: 5, height: 5), cornerRadius: 5)
-//
-//        let followCircle = SKAction.follow(circle.cgPath, asOffset: true, orientToPath: false, duration: 2.0)
-//
-//        leftBumper.run(SKAction.sequence([followCircle]))
-//        rightBumper.run(SKAction.sequence([followCircle]))
+    }
+    
+    // Called when 2+ physicsBodies collide
+//    func didBegin(_ contact: SKPhysicsContact)
+//    {
+//        if (contact.bodyA.node?.name == "bumper" && contact.bodyB.node?.name == "ball")
+//        {
+//            print("Ball/Bumper collided")
+//            ball.physicsBody?.applyImpulse(CGVector(dx:, dy:))
+//        }
+//    }
+    
+    enum Difficulty
+    {
+        case easy
+        case medium
+        case hard
     }
 }
