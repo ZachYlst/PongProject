@@ -10,9 +10,10 @@ import SpriteKit
 import GameplayKit
 
 // The primary scene where the game commences
-class GameScene: SKScene, SKPhysicsContactDelegate
+public class GameScene: SKScene, SKPhysicsContactDelegate, UIPickerViewDelegate //,UIPickerViewSource
 {
     var exitCode: Int = 0
+    var difficultyCode: Int = 0
     var score = [Int]()
     
     var player = SKSpriteNode()
@@ -22,15 +23,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     var opponentScore = SKLabelNode()
     var bumper = SKSpriteNode()
     
-    var pausedLabel = SKLabelNode()
+    var playerPausedLabel = SKLabelNode()
+    var opponentPausedLabel = SKLabelNode()
     var pausedBackground = SKSpriteNode()
     
-    var easyButton = SKSpriteNode()
-    var mediumButton = SKSpriteNode()
-    var hardButton = SKSpriteNode()
-    
     // Called imediately after the scene is called by the view
-    override func didMove(to view: SKView)
+    override public func didMove(to view: SKView)
     {
         startGame()
         
@@ -45,17 +43,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         bumper = self.childNode(withName: "bumper") as! SKSpriteNode
         bumper.physicsBody?.usesPreciseCollisionDetection = true
         
-        pausedLabel = self.childNode(withName: "pausedLabel") as! SKLabelNode
-        pausedLabel.isHidden = true
+        playerPausedLabel = self.childNode(withName: "playerPausedLabel") as! SKLabelNode
+        playerPausedLabel.alpha = CGFloat(0.0)
+        opponentPausedLabel = self.childNode(withName: "opponentPausedLabel") as! SKLabelNode
+        opponentPausedLabel.alpha = CGFloat(0.0)
         pausedBackground = self.childNode(withName: "pausedBackground") as! SKSpriteNode
-        pausedBackground.isHidden = true
-        
-        easyButton = self.childNode(withName: "easyButton") as! SKSpriteNode
-        easyButton.isUserInteractionEnabled = true
-        mediumButton = self.childNode(withName: "mediumButton") as! SKSpriteNode
-        mediumButton.isUserInteractionEnabled = true
-        hardButton = self.childNode(withName: "hardButton") as! SKSpriteNode
-        hardButton.isUserInteractionEnabled = true
+        pausedBackground.alpha = CGFloat(0.0)
         
         ball.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 40))
         
@@ -83,7 +76,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         if playerWhoWon == player
         {
-
             score[0] += 1
             playerScore.text = String("\(score[0])")
             ball.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 40))
@@ -105,11 +97,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     }
     
     // Called when a touch is detected in the view
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         self.view?.isPaused = false
-        pausedLabel.isHidden = true
-        pausedBackground.isHidden = true
+        playerPausedLabel.alpha = CGFloat(0.0)
+        opponentPausedLabel.alpha = CGFloat(0.0)
+        pausedBackground.alpha = CGFloat(0.0)
         
         for touch in touches
         {
@@ -117,11 +110,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             
             player.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
-       
+        
     }
     
     // Called when the location of a touch changes
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         for touch in touches
         {
@@ -132,18 +125,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     }
     
     // Called when the user's finger is removed from the scene
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         self.view?.isPaused = true
-        pausedLabel.isHidden = false
-        pausedBackground.isHidden = false
+        playerPausedLabel.alpha = CGFloat(1.0)
+        print("The playerPausedLabel should be appearing")
+        opponentPausedLabel.alpha = CGFloat(1.0)
+        pausedBackground.alpha = CGFloat(0.8)
     }
     
     // Called every frame the scene is active
-    override func update(_ currentTime: TimeInterval)
+    override public func update(_ currentTime: TimeInterval)
     {
         opponent.run(SKAction.moveTo(x: ball.position.x, duration: 0.3))
-        
+
         if ball.position.y <= player.position.y - 100
         {
             addScore(playerWhoWon: opponent)
@@ -163,11 +158,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate
 //            ball.physicsBody?.applyImpulse(CGVector(dx:, dy:))
 //        }
 //    }
-    
-    enum Difficulty
-    {
-        case easy
-        case medium
-        case hard
-    }
 }

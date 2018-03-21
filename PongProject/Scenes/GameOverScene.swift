@@ -9,12 +9,12 @@
 import SpriteKit
 import GameplayKit
 
-class GameOverScene: SKScene
+public class GameOverScene: SKScene
 {
     var winnerLabel = SKLabelNode()
     var exitedCode = GameScene()
     
-    override func didMove(to view: SKView)
+    override public func didMove(to view: SKView)
     {
         winnerLabel = self.childNode(withName: "winnerLabel") as! SKLabelNode
         
